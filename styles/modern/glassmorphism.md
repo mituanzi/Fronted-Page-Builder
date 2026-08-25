@@ -272,3 +272,45 @@ document.querySelectorAll('.glow-follow').forEach(function(el) {
 ## 参考实现
 
 纯 CSS+JS 实现。核心属性 `backdrop-filter: blur(Npx)`，配合彩色渐变背景和浮动光斑实现玻璃质感。
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  /* 渐变光晕从 3 个减为 2 个 */
+  .bg-orb-3 { display: none; }
+  /* backdrop-filter 降级 */
+  .glass-card { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 仅保留 1-2 个光晕（性能 + 视觉不过载） */
+  .bg-orb-2 { display: none; }
+  .bg-orb-1 { width: 300px; height: 300px; opacity: 0.4; }
+
+  /* backdrop-filter 进一步降低（低端设备关键优化） */
+  .glass-card { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .glass-heavy { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+  /* 玻璃卡片圆角从 20px 降至 16px */
+  .glass-card { border-radius: 16px; }
+
+  /* 卡片间距收紧 */
+  .bento-grid { gap: 12px; }
+
+  /* 玻璃卡片不可堆叠超过 1 层 */
+  .glass-card .glass-card { backdrop-filter: none; background: rgba(255,255,255,0.06); }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .glass-card { border-radius: 14px; padding: 16px; }
+  .hero-title { font-size: 24px; }
+}
+```
+
+**关键点**：玻璃拟态是移动端性能最敏感的风格 — `backdrop-filter` 在低端手机上帧率暴跌。必须在移动端递减 blur 值（20px → 16px → 12px → 8px），减少光晕数量，禁止嵌套玻璃层。渐变背景在移动端保留但降低光晕数量维持视觉效果。
