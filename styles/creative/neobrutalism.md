@@ -1,6 +1,7 @@
 # 新粗野主义风（Neobrutalism）
 
 > 参考：Gumroad、Bolt.new、Linear 部分页面、Figma Community、粗野主义网页设计潮流
+
 > 适用：创意品牌、独立产品、设计工作室、开发者工具、个人作品集、活动页
 
 ## 配色体系
