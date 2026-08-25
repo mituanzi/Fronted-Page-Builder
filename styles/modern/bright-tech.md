@@ -1,6 +1,7 @@
 # 明亮科技风（Bright Tech）
 
 > 参考：Apple、Notion、Stripe、Linear Docs
+
 > 适用：SaaS 产品、管理后台、文档平台、数据工具
 
 ## 配色体系
