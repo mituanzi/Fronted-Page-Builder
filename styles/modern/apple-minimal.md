@@ -234,3 +234,50 @@ document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el)
 
 - 适合：产品官网、品牌展示页、科技公司主页、简洁工具介绍页、高端 SaaS 落地页
 - 禁忌：不可使用彩色渐变背景；不可使用深色阴影（阴影透明度不超过 0.08）；不可使用过小的字号（正文至少 16px）；不可使用鲜艳的装饰色（蓝色是唯一允许的非灰度色）；不可使用粗糙的动画（所有 transition 时长至少 0.3s）；不可使用直角（所有圆角至少 8px）
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  /* 内容最大宽度收窄 */
+  .content-wrapper { max-width: 720px; }
+  /* 超大标题缩小 */
+  .hero-title { font-size: 48px; }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* Apple 风格核心：留白保持，不压缩 */
+  .section { padding: 48px 20px; }
+
+  /* 超大标题 28px，保持层次感 */
+  .hero-title { font-size: 28px; line-height: 1.15; }
+  .section-title { font-size: 22px; }
+
+  /* 胶囊按钮全宽 */
+  .btn-pill { width: 100%; padding: 14px 24px; border-radius: 980px; }
+
+  /* 产品图片全宽 */
+  .product-image { width: 100%; height: auto; }
+
+  /* 滚动动画保留但缩短 */
+  .fade-up { transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+
+  /* 导航简化 */
+  .header-nav .nav-secondary { display: none; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .hero-title { font-size: 24px; }
+  .section { padding: 40px 16px; }
+  .hero-content { padding: 0; }
+  /* 链接组纵向排列 */
+  .link-group { flex-direction: column; gap: 12px; }
+}
+```
+
+**关键点**：Apple 风格在移动端的核心原则是"留白不打折" — 即使屏幕变窄，垂直留白仍保持 48px+。标题从 64px 缩至 28px 但保持 line-height 1.15 的呼吸感。胶囊按钮全宽是 Apple 官网的移动端标准做法。滚动动画保留但缩短至 0.5s。
