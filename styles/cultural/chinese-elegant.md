@@ -212,3 +212,52 @@ body { background: var(--bg-0); color: var(--text-1); font-family: var(--font-cn
 
 - 适合：文化展示、博物馆数字馆、传统工艺、茶文化、书画展示、国潮品牌
 - 禁忌：不可使用荧光色/纯白底；不可使用方圆角过大；不可使用 emoji；正文字号不可小于 14px
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  .content-wrapper { max-width: 720px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 水墨装饰元素隐藏（性能 + 小屏视觉过载） */
+  .ink-decoration, .ink-splash { display: none; }
+
+  /* 留白保持（国风核心特征） */
+  .section { padding: 48px 20px; }
+
+  /* 衬线字体最小 16px（可读性） */
+  .body-text { font-size: 16px; line-height: 1.8; }
+
+  /* 印章装饰缩小 */
+  .seal { width: 48px; height: 48px; }
+
+  /* 标题保持层次 */
+  .hero-title { font-size: 28px; }
+  .section-title { font-size: 22px; }
+
+  /* 画廊单列 */
+  .gallery-grid { grid-template-columns: 1fr; }
+
+  /* 宣纸纹理保留但降低透明度 */
+  .paper-texture { opacity: 0.3; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .hero-title { font-size: 24px; }
+  .section { padding: 36px 16px; }
+  .seal { width: 36px; height: 36px; }
+  .body-text { font-size: 15px; }
+  /* 垂直书写降级为水平（小屏无法支撑竖排） */
+  .vertical-text { writing-mode: horizontal-tb; }
+}
+```
+
+**关键点**：国风雅致在移动端的核心是"留白不打折"和"衬线可读性"。水墨装饰在移动端隐藏（GPU 性能 + 小屏视觉过载），但宣纸纹理保留（降低透明度）。竖排文字在小屏降级为横排（`writing-mode: horizontal-tb`），因为窄屏无法支撑竖排的阅读体验。正文字号最小 15px 保证衬线字体的可读性。
