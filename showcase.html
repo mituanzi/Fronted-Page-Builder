@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend Page Builder — 十风格视觉画廊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600&family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ========== 1. CSS Variables ========== */
+:root {
+  --bg-0: #0B0E14;
+  --bg-1: #131820;
+  --bg-2: #1A2030;
+  --bg-3: #252D3F;
+  --accent: #7C6BF0;
+  --accent-glow: rgba(124,107,240,0.12);
+  --accent-2: #00D4AA;
+  --text-0: #F0F4F8;
+  --text-1: #C4CDD9;
+  --text-2: #8295A8;
+  --text-3: #5A6E82;
+  --border: rgba(124,107,240,0.10);
+  --border-strong: rgba(124,107,240,0.25);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --header-h: 64px;
+  --font-cn: "Noto Sans SC","PingFang SC",sans-serif;
+  --font-en: "Inter",-apple-system,sans-serif;
+}
+
+/* ========== 2. Reset & Base ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-cn); background: var(--bg-0); color: var(--text-1); line-height: 1.6; overflow-x: hidden; }
+a { color: var(--accent); text-decoration: none; }
+button { font-family: inherit; border: none; cursor: pointer; }
+
+/* ========== 3. Background ========== */
+.bg-glow {
+  position: fixed; top: -300px; left: 30%; width: 700px; height: 700px;
+  z-index: 0; pointer-events: none;
+  background: radial-gradient(circle, rgba(124,107,240,0.06), transparent 70%);
+  border-radius: 50%;
+  animation: floatGlow 20s ease-in-out infinite;
+}
+.bg-glow-2 {
+  position: fixed; bottom: -200px; right: -100px; width: 600px; height: 600px;
+  z-index: 0; pointer-events: none;
+  background: radial-gradient(circle, rgba(0,212,170,0.04), transparent 70%);
+  border-radius: 50%;
+  animation: floatGlow 24s ease-in-out infinite reverse;
+}
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(40px, 30px); }
+}
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(124,107,240,0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(124,107,240,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 80%);
+}
+
+/* ========== 4. Header ========== */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+  background: rgba(11,14,20,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
+}
+.header-left { display: flex; align-items: baseline; gap: 12px; }
+.header-left .h-title { font-size: 18px; font-weight: 700; color: var(--text-0); letter-spacing: 0.5px; }
+.header-left .h-sub { font-family: var(--font-en); font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 1.5px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-right .badge {
+  font-size: 12px; padding: 4px 12px; border-radius: 999px;
+  background: var(--accent-glow); color: var(--accent); border: 1px solid var(--border-strong);
+  font-family: var(--font-en); letter-spacing: 0.5px;
+}
+
+/* ========== 5. Layout ========== */
+.container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: calc(var(--header-h) + 60px) 32px 80px; }
+
+/* ========== 6. Hero ========== */
+.hero { text-align: center; margin-bottom: 80px; }
+.hero-tag {
+  display: inline-block; font-family: var(--font-en); font-size: 12px;
+  color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border-strong);
+  background: var(--accent-glow); margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: 48px; font-weight: 800; color: var(--text-0); line-height: 1.15;
+  letter-spacing: -0.02em; margin-bottom: 16px;
+}
+.hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: 17px; color: var(--text-2); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+.hero-stats { display: flex; justify-content: center; gap: 48px; margin-top: 40px; }
+.hero-stat { text-align: center; }
+.hero-stat .num { font-family: var(--font-en); font-size: 36px; font-weight: 800; color: var(--text-0); }
+.hero-stat .label { font-size: 13px; color: var(--text-3); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* ========== 7. Gallery Grid ========== */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .gallery { grid-template-columns: 1fr; } }
+
+/* ========== 8. Style Card ========== */
+.style-card {
+  background: var(--bg-1); border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; transition: all 0.4s var(--ease);
+}
+.style-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+/* Card Header */
+.sc-head { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.sc-head-left { display: flex; align-items: center; gap: 12px; }
+.sc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.sc-title { font-size: 17px; font-weight: 700; color: var(--text-0); }
+.sc-sub { font-family: var(--font-en); font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.sc-cat { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-family: var(--font-en); letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* Card Body — Mini Preview */
+.sc-preview { padding: 24px; position: relative; min-height: 200px; display: flex; flex-direction: column; gap: 12px; }
+
+/* Color Swatches */
+.sc-colors { display: flex; gap: 6px; margin-bottom: 4px; }
+.sc-swatch { width: 28px; height: 28px; border-radius: 6px; position: relative; cursor: pointer; transition: transform 0.2s; }
+.sc-swatch:hover { transform: scale(1.15); z-index: 1; }
+.sc-swatch::after {
+  content: attr(data-color); position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-en); font-size: 9px; color: var(--text-3); white-space: nowrap;
+  opacity: 0; transition: opacity 0.2s; pointer-events: none;
+}
+.sc-swatch:hover::after { opacity: 1; }
+
+/* Mini UI elements inside preview */
+.mini-card { padding: 14px 16px; border-radius: 8px; display: flex; align-items: center; gap: 12px; }
+.mini-card .mini-icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.mini-card .mini-text { flex: 1; }
+.mini-card .mini-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.mini-card .mini-desc { font-size: 11px; opacity: 0.7; }
+.mini-btn { padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.mini-input { padding: 8px 12px; border-radius: 6px; font-size: 12px; flex: 1; outline: none; }
+
+/* Card Footer — Meta */
+.sc-meta { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; }
+.sc-tag {
+  font-size: 11px; padding: 3px 10px; border-radius: 6px;
+  background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border);
+}
+.sc-tag strong { color: var(--text-0); font-weight: 600; }
+
+/* ========== 9. Footer ========== */
+.footer { text-align: center; padding: 60px 0 20px; color: var(--text-3); font-size: 13px; }
+.footer a { color: var(--accent); }
+
+/* ========== 10. Fade In Animation ========== */
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-left">
+    <span class="h-title">Frontend Page Builder</span>
+    <span class="h-sub">Style Gallery</span>
+  </div>
+  <div class="header-right">
+    <span class="badge">10 Styles</span>
+    <span class="badge">Single File</span>
+  </div>
+</header>
+
+<!-- Container -->
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero fade-up">
+    <span class="hero-tag">Skill Showcase</span>
+    <h1>十种风格，<span>一键构建</span>前端页面</h1>
+    <p>从深色工业科技到国风雅致，覆盖数据平台、AI 产品、SaaS、消费应用、管理后台等全部场景。纯 HTML+CSS+JS 单文件，无需构建工具。</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">10</div><div class="label">Design Styles</div></div>
+      <div class="hero-stat"><div class="num">5</div><div class="label">Categories</div></div>
+      <div class="hero-stat"><div class="num">0</div><div class="label">Dependencies</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="label">Single File</div></div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <div class="gallery" id="gallery"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Frontend Page Builder Skill — 从润滑材料AI预测引擎项目沉淀，扩展为十种风格的通用前端构建体系</p>
+  </footer>
+
+</div>
+
+<script>
+var STYLES = [
+  {
+    name: '深色工业科技风',
+    nameEn: 'Industrial Dark',
+    icon: '&#9881;',
+    iconColor: '#00C8D7',
+    cat: 'dark',
+    catLabel: 'Dark',
+    catColor: '#00C8D7',
+    colors: [
+      { c: '#081018', n: 'bg-0' },
+      { c: '#0B1828', n: 'bg-1' },
+      { c: '#00C8D7', n: 'cyan' },
+      { c: '#7567FF', n: 'purple' },
+      { c: '#C40018', n: 'red' },
+      { c: '#F0F4F8', n: 'text' }
+    ],
+    preview: 'industrial',
+    tags: [
+      { k: '圆角', v: '8-16px' },
+      { k: '阴影', v: '中等+发光' },
+      { k: '字体', v: '无衬线' },
+      { k: '动画', v: '0.8s' },
+      { k: '布局', v: '标准 Section' }
+    ],
+    useCase: '数据平台、科研工具、监控大屏'
+  },
+  {
+    name: '未来赛博风',
+    nameEn: 'Cyberpunk',
+    icon: '&#9763;',
+    iconColor: '#00FFFF',
+    cat: 'dark',
+    catLabel: 'Dark',
+    catColor: '#00FFFF',
+    colors: [
+      { c: '#0A0014', n: 'bg-0' },
+      { c: '#0F0020', n: 'bg-1' },
+      { c: '#00FFFF', n: 'cyan' },
+      { c: '#FF00FF', n: 'magenta' },
+      { c: '#00FF88', n: 'green' },
+      { c: '#E0FFFF', n: 'text' }
+    ],
+    preview: 'cyberpunk',
+    tags: [
+      { k: '圆角', v: '4-8px' },
+      { k: '阴影', v: '荧光辉光' },
+      { k: '字体', v: 'Orbitron+Mono' },
+      { k: '动画', v: '0.5s+扫描' },
+      { k: '特效', v: '粒子+Glitch' }
+    ],
+    useCase: 'Web3、游戏平台、AI 实验室'
+  },
+  {
+    name: '明亮科技风',
+    nameEn: 'Bright Tech',
+    icon: '&#9729;',
+    iconColor: '#0066FF',
+    cat: 'modern',
+    catLabel: 'Modern',
+    catColor: '#0066FF',
+    colors: [
+      { c: '#FFFFFF', n: 'bg-0' },
+      { c: '#F7F9FC', n: 'bg-1' },
+      { c: '#0066FF', n: 'accent' },
+      { c: '#6B46FF', n: 'accent-2' },
+      { c: '#00B884', n: 'success' },
+      { c: '#1A202C', n: 'text' }
+    ],
+    preview: 'brighttech',
+    tags: [
+      { k: '圆角', v: '8-16px' },
+      { k: '阴影', v: '轻柔' },
+      { k: '字体', v: '无衬线' },
+      { k: '动画', v: '0.6s' },
+      { k: '布局', v: '标准/Bento' }
+    ],
+    useCase: 'SaaS 产品、管理后台、文档平台'
+  },
+  {
+    name: '玻璃拟态风',
+    nameEn: 'Glassmorphism',
+    icon: '&#9670;',
+    iconColor: '#A855F7',
+    cat: 'modern',
+    catLabel: 'Modern',
+    catColor: '#A855F7',
+    colors: [
+      { c: '#6366F1', n: 'bg-0' },
+      { c: '#A855F7', n: 'bg-1' },
+      { c: '#EC4899', n: 'bg-2' },
+      { c: '#8B5CF6', n: 'accent' },
+      { c: '#06B6D4', n: 'accent-3' },
+      { c: '#FFFFFF', n: 'text' }
+    ],
+    preview: 'glass',
+    tags: [
+      { k: '圆角', v: '16-24px' },
+      { k: '阴影', v: '柔和+透光' },
+      { k: '字体', v: '无衬线' },
+      { k: '动画', v: '0.5s+光效' },
+      { k: '核心', v: 'backdrop-filter' }
+    ],
+    useCase: 'AI 产品、智能助手、创意工具'
+  },
+  {
+    name: 'Apple 极简风',
+    nameEn: 'Apple Minimal',
+    icon: '&#9762;',
+    iconColor: '#0071E3',
+    cat: 'modern',
+    catLabel: 'Modern',
+    catColor: '#0071E3',
+    colors: [
+      { c: '#FFFFFF', n: 'bg-0' },
+      { c: '#FBFBFD', n: 'bg-1' },
+      { c: '#F5F5F7', n: 'bg-2' },
+      { c: '#1D1D1F', n: 'accent' },
+      { c: '#0071E3', n: 'accent-2' },
+      { c: '#1D1D1F', n: 'text' }
+    ],
+    preview: 'apple',
+    tags: [
+      { k: '圆角', v: '12-20px' },
+      { k: '阴影', v: '极轻' },
+      { k: '字体', v: 'SF Pro' },
+      { k: '动画', v: '0.8s+滚动' },
+      { k: '留白', v: '大量' }
+    ],
+    useCase: '产品官网、品牌展示、高端 SaaS'
+  },
+  {
+    name: '明亮可爱风',
+    nameEn: 'Bright Cute',
+    icon: '&#9786;',
+    iconColor: '#FF6B6B',
+    cat: 'creative',
+    catLabel: 'Creative',
+    catColor: '#FF6B6B',
+    colors: [
+      { c: '#FFF8F4', n: 'bg-0' },
+      { c: '#FFFFFF', n: 'bg-1' },
+      { c: '#FF6B6B', n: 'accent' },
+      { c: '#4ECDC4', n: 'accent-2' },
+      { c: '#FFD93D', n: 'accent-3' },
+      { c: '#A78BFA', n: 'accent-4' }
+    ],
+    preview: 'cute',
+    tags: [
+      { k: '圆角', v: '12-32px' },
+      { k: '阴影', v: '柔和+色调' },
+      { k: '字体', v: '无衬线' },
+      { k: '动画', v: '弹跳+摇摆' },
+      { k: 'Emoji', v: '鼓励使用' }
+    ],
+    useCase: '教育产品、消费应用、引导页'
+  },
+  {
+    name: '新粗野主义',
+    nameEn: 'Neobrutalism',
+    icon: '&#9635;',
+    iconColor: '#000000',
+    cat: 'creative',
+    catLabel: 'Creative',
+    catColor: '#FF3366',
+    colors: [
+      { c: '#FFE600', n: 'bg-0' },
+      { c: '#FFFFFF', n: 'bg-1' },
+      { c: '#FF6B6B', n: 'bg-2' },
+      { c: '#4ECDC4', n: 'bg-3' },
+      { c: '#000000', n: 'accent' },
+      { c: '#FF3366', n: 'accent-2' }
+    ],
+    preview: 'brutal',
+    tags: [
+      { k: '圆角', v: '0-8px' },
+      { k: '阴影', v: '硬阴影无模糊' },
+      { k: '字体', v: '粗无衬线' },
+      { k: '动画', v: '0.2s 硬切' },
+      { k: '边框', v: '3px 纯黑' }
+    ],
+    useCase: '创意品牌、独立产品、开发者工具'
+  },
+  {
+    name: '商务简约风',
+    nameEn: 'Business Minimal',
+    icon: '&#9636;',
+    iconColor: '#18181B',
+    cat: 'business',
+    catLabel: 'Business',
+    catColor: '#3B82F6',
+    colors: [
+      { c: '#FAFAFA', n: 'bg-0' },
+      { c: '#FFFFFF', n: 'bg-1' },
+      { c: '#F4F4F5', n: 'bg-2' },
+      { c: '#18181B', n: 'accent' },
+      { c: '#3B82F6', n: 'accent-2' },
+      { c: '#18181B', n: 'text' }
+    ],
+    preview: 'business',
+    tags: [
+      { k: '圆角', v: '6-12px' },
+      { k: '阴影', v: '极轻' },
+      { k: '字体', v: '无衬线' },
+      { k: '动画', v: '0.4s 克制' },
+      { k: '装饰', v: '无' }
+    ],
+    useCase: '企业内部系统、项目管理、API 平台'
+  },
+  {
+    name: '数据仪表盘风',
+    nameEn: 'Dashboard',
+    icon: '&#9776;',
+    iconColor: '#2563EB',
+    cat: 'business',
+    catLabel: 'Business',
+    catColor: '#2563EB',
+    colors: [
+      { c: '#F8F9FB', n: 'bg-0' },
+      { c: '#FFFFFF', n: 'bg-1' },
+      { c: '#1E293B', n: 'sidebar' },
+      { c: '#2563EB', n: 'accent' },
+      { c: '#7C3AED', n: 'accent-2' },
+      { c: '#10B981', n: 'success' }
+    ],
+    preview: 'dashboard',
+    tags: [
+      { k: '圆角', v: '6-10px' },
+      { k: '阴影', v: '轻柔' },
+      { k: '字体', v: '无衬线+Mono' },
+      { k: '布局', v: '侧边栏+内容区' },
+      { k: '组件', v: '表格+图表' }
+    ],
+    useCase: '管理后台、ERP/CRM、数据看板'
+  },
+  {
+    name: '国风雅致风',
+    nameEn: 'Chinese Elegant',
+    icon: '&#9774;',
+    iconColor: '#8B2C2C',
+    cat: 'cultural',
+    catLabel: 'Cultural',
+    catColor: '#8B2C2C',
+    colors: [
+      { c: '#F5F0E8', n: '宣纸白' },
+      { c: '#FAF6EF', n: '浅米' },
+      { c: '#8B2C2C', n: '朱砂红' },
+      { c: '#2C5F7C', n: '青黛蓝' },
+      { c: '#5B7A3A', n: '苍翠绿' },
+      { c: '#8B6914', n: '赭石金' }
+    ],
+    preview: 'chinese',
+    tags: [
+      { k: '圆角', v: '6-14px' },
+      { k: '阴影', v: '轻柔+暖色' },
+      { k: '字体', v: '衬线为主' },
+      { k: '动画', v: '1.0s 缓慢' },
+      { k: '装饰', v: '水墨+印章' }
+    ],
+    useCase: '文化展示、博物馆数字馆、传统工艺'
+  }
+];
+
+// Generate preview HTML for each style
+function getPreviewHTML(type) {
+  var previews = {
+    industrial: '<div class="mini-card" style="background:rgba(11,24,40,0.9);border:1px solid rgba(0,200,215,0.15);border-radius:10px;">' +
+      '<div class="mini-icon" style="background:linear-gradient(135deg,#00C8D7,#7567FF);"></div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#F0F4F8;">预测引擎</div><div class="mini-desc" style="color:#8295A8;">置信度 96.8%</div></div>' +
+      '<span style="font-family:Inter;font-size:18px;font-weight:700;color:#00C8D7;">96.8%</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;">' +
+      '<button class="mini-btn" style="background:linear-gradient(135deg,#00C8D7,#7567FF);color:#fff;">开始预测</button>' +
+      '<button class="mini-btn" style="background:transparent;border:1px solid rgba(0,200,215,0.3);color:#C4D0DE;">查看详情</button>' +
+      '</div>',
+
+    cyberpunk: '<div class="mini-card" style="background:rgba(15,0,32,0.85);border:1px solid rgba(0,255,255,0.25);border-radius:6px;box-shadow:0 0 12px rgba(0,255,255,0.1);">' +
+      '<div class="mini-icon" style="background:transparent;border:1px solid #00FFFF;box-shadow:0 0 8px rgba(0,255,255,0.4);"></div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#E0FFFF;font-family:Share Tech Mono;text-shadow:0 0 6px rgba(0,255,255,0.4);">NEURAL_NET</div><div class="mini-desc" style="color:#707090;font-family:Share Tech Mono;">STATUS: ACTIVE</div></div>' +
+      '<span style="font-family:Share Tech Mono;font-size:16px;color:#00FFFF;text-shadow:0 0 8px rgba(0,255,255,0.5);">99.7%</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;">' +
+      '<button class="mini-btn" style="background:transparent;border:1px solid #00FFFF;color:#00FFFF;text-transform:uppercase;letter-spacing:1px;font-family:Orbitron;box-shadow:0 0 8px rgba(0,255,255,0.15);">EXECUTE</button>' +
+      '<button class="mini-btn" style="background:transparent;border:1px solid #FF00FF;color:#FF00FF;text-transform:uppercase;letter-spacing:1px;font-family:Orbitron;">SCAN</button>' +
+      '</div>',
+
+    brighttech: '<div class="mini-card" style="background:#F7F9FC;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">' +
+      '<div class="mini-icon" style="background:linear-gradient(135deg,#0066FF,#6B46FF);border-radius:8px;"></div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#1A202C;">数据分析</div><div class="mini-desc" style="color:#718096;">已完成 1,284 项</div></div>' +
+      '<span style="font-family:Inter;font-size:18px;font-weight:700;color:#0066FF;">+24%</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;">' +
+      '<button class="mini-btn" style="background:#0066FF;color:#fff;box-shadow:0 1px 3px rgba(0,102,255,0.2);border-radius:8px;">新建任务</button>' +
+      '<button class="mini-btn" style="background:transparent;border:1px solid #E2E8F0;color:#2D3748;border-radius:8px;">导出</button>' +
+      '</div>',
+
+    glass: '<div style="background:linear-gradient(135deg,#6366F1,#A855F7,#EC4899);padding:20px;border-radius:12px;">' +
+      '<div class="mini-card" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.25);border-radius:16px;">' +
+      '<div class="mini-icon" style="background:rgba(255,255,255,0.2);border-radius:8px;"></div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#fff;">AI 助手</div><div class="mini-desc" style="color:rgba(255,255,255,0.65);">实时响应中</div></div>' +
+      '<span style="font-family:Inter;font-size:18px;font-weight:700;color:#fff;">3.2K</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:8px;">' +
+      '<button class="mini-btn" style="background:#8B5CF6;color:#fff;border-radius:10px;box-shadow:0 4px 16px rgba(139,92,246,0.2);">开始对话</button>' +
+      '<button class="mini-btn" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:10px;">设置</button>' +
+      '</div></div>',
+
+    apple: '<div style="background:#FFFFFF;padding:20px;border-radius:12px;">' +
+      '<div style="text-align:center;margin-bottom:12px;">' +
+      '<div style="font-size:22px;font-weight:700;color:#1D1D1F;letter-spacing:-0.02em;">Think Different.</div>' +
+      '<div style="font-size:13px;color:#6E6E73;margin-top:4px;">为创造者而设计</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:10px;justify-content:center;">' +
+      '<button class="mini-btn" style="background:#0071E3;color:#fff;border-radius:980px;padding:8px 20px;font-size:13px;font-weight:400;">了解更多</button>' +
+      '<button class="mini-btn" style="background:transparent;color:#0071E3;border:1px solid #0071E3;border-radius:980px;padding:8px 20px;font-size:13px;font-weight:400;">购买</button>' +
+      '</div></div>',
+
+    cute: '<div style="background:#FFF8F4;padding:20px;border-radius:16px;">' +
+      '<div class="mini-card" style="background:#FFFFFF;border:1px solid #FFE4D9;border-radius:16px;box-shadow:0 2px 8px rgba(255,107,107,0.06);">' +
+      '<div class="mini-icon" style="background:#FF6B6B;border-radius:10px;font-size:16px;">&#128522;</div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#2D2D2D;">&#127869; 喝水打卡</div><div class="mini-desc" style="color:#888888;">连续 7 天！</div></div>' +
+      '<span style="font-size:20px;">&#10024;</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;">' +
+      '<button class="mini-btn" style="background:#FF6B6B;color:#fff;border-radius:999px;box-shadow:0 4px 12px rgba(255,107,107,0.2);">&#10003; 打卡</button>' +
+      '<button class="mini-btn" style="background:transparent;border:2px solid #FFCBA8;color:#4A4A4A;border-radius:999px;">详情</button>' +
+      '</div></div>',
+
+    brutal: '<div style="background:#FFE600;padding:20px;border-radius:4px;">' +
+      '<div class="mini-card" style="background:#FFFFFF;border:3px solid #000;border-radius:4px;box-shadow:4px 4px 0px #000;">' +
+      '<div class="mini-icon" style="background:#FF3366;border:3px solid #000;border-radius:2px;"></div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#000;font-weight:800;text-transform:uppercase;">BADASS TOOL</div><div class="mini-desc" style="color:#333;font-weight:600;">FOR DEVS WHO SHIP</div></div>' +
+      '<span style="font-family:Space Grotesk;font-size:18px;font-weight:800;color:#000;">$29</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;">' +
+      '<button class="mini-btn" style="background:#000;color:#fff;border:3px solid #000;border-radius:4px;box-shadow:4px 4px 0px #000;font-weight:700;text-transform:uppercase;">BUY NOW</button>' +
+      '<button class="mini-btn" style="background:#4ECDC4;color:#000;border:3px solid #000;border-radius:4px;box-shadow:4px 4px 0px #000;font-weight:700;text-transform:uppercase;">TRY FREE</button>' +
+      '</div></div>',
+
+    business: '<div style="background:#FAFAFA;padding:20px;border-radius:8px;">' +
+      '<div class="mini-card" style="background:#FFFFFF;border:1px solid #E4E4E7;border-radius:8px;">' +
+      '<div class="mini-icon" style="background:#18181B;border-radius:6px;"></div>' +
+      '<div class="mini-text"><div class="mini-title" style="color:#18181B;font-size:13px;font-weight:600;">Project Alpha</div><div class="mini-desc" style="color:#71717A;font-size:11px;">Updated 2h ago</div></div>' +
+      '<span style="font-family:Inter;font-size:13px;color:#71717A;font-variant-numeric:tabular-nums;">42 / 58</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;">' +
+      '<button class="mini-btn" style="background:#18181B;color:#fff;border-radius:6px;font-size:12px;font-weight:500;">Open Project</button>' +
+      '<button class="mini-btn" style="background:transparent;border:1px solid #E4E4E7;color:#3F3F46;border-radius:6px;font-size:12px;">Settings</button>' +
+      '</div></div>',
+
+    dashboard: '<div style="background:#F8F9FB;padding:20px;border-radius:8px;">' +
+      '<div style="display:flex;gap:8px;margin-bottom:8px;">' +
+      '<div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px;flex:1;">' +
+      '<div style="font-size:10px;color:#64748B;">Total Users</div>' +
+      '<div style="font-family:Inter;font-size:16px;font-weight:700;color:#0F172A;">12,847</div>' +
+      '<div style="font-size:10px;color:#10B981;">&#9650; 12.3%</div>' +
+      '</div>' +
+      '<div style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px;flex:1;">' +
+      '<div style="font-size:10px;color:#64748B;">Revenue</div>' +
+      '<div style="font-family:Inter;font-size:16px;font-weight:700;color:#0F172A;">$48.2K</div>' +
+      '<div style="font-size:10px;color:#EF4444;">&#9660; 2.1%</div>' +
+      '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:flex-end;gap:4px;height:40px;">' +
+      '<div style="flex:1;height:40%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '<div style="flex:1;height:65%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '<div style="flex:1;height:50%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '<div style="flex:1;height:80%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '<div style="flex:1;height:90%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '<div style="flex:1;height:70%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '<div style="flex:1;height:55%;background:linear-gradient(180deg,#2563EB,#7C3AED);border-radius:3px 3px 0 0;"></div>' +
+      '</div></div>',
+
+    chinese: '<div style="background:#F5F0E8;padding:20px;border-radius:10px;">' +
+      '<div style="text-align:center;margin-bottom:12px;">' +
+      '<div style="display:inline-block;width:36px;height:36px;background:#8B2C2C;color:#FAF6EF;border-radius:4px;font-family:Noto Serif SC;font-size:12px;font-weight:600;letter-spacing:1px;line-height:36px;box-shadow:0 2px 8px rgba(139,44,44,0.15);">墨韵</div>' +
+      '<div style="font-family:Noto Serif SC;font-size:18px;font-weight:600;color:#2C2420;letter-spacing:4px;margin-top:8px;">水墨丹青</div>' +
+      '<div style="font-family:Cormorant Garamond,Georgia,serif;font-size:11px;color:#7A6E64;font-style:italic;letter-spacing:2px;margin-top:2px;">Ink & Wash</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;justify-content:center;">' +
+      '<button class="mini-btn" style="background:#8B2C2C;color:#FAF6EF;border-radius:4px;font-family:Noto Serif SC;letter-spacing:2px;font-size:12px;">鉴赏</button>' +
+      '<button class="mini-btn" style="background:#FAF6EF;border:1px solid #C4B8A0;color:#4A3F38;border-radius:4px;font-family:Noto Serif SC;letter-spacing:2px;font-size:12px;">了解更多</button>' +
+      '</div></div>'
+  };
+  return previews[type] || '';
+}
+
+// Render gallery
+function renderGallery() {
+  var html = '';
+  STYLES.forEach(function(s, i) {
+    var catBg = 'rgba(124,107,240,0.08)';
+    var catText = '#7C6BF0';
+    if (s.cat === 'dark') { catBg = 'rgba(0,200,215,0.08)'; catText = '#00C8D7'; }
+    else if (s.cat === 'modern') { catBg = 'rgba(0,102,255,0.08)'; catText = '#0066FF'; }
+    else if (s.cat === 'creative') { catBg = 'rgba(255,107,107,0.08)'; catText = '#FF6B6B'; }
+    else if (s.cat === 'business') { catBg = 'rgba(37,99,235,0.08)'; catText = '#2563EB'; }
+    else if (s.cat === 'cultural') { catBg = 'rgba(139,44,44,0.08)'; catText = '#8B2C2C'; }
+
+    html += '<div class="style-card fade-up" style="transition-delay:' + (i * 60) + 'ms;">';
+    html += '<div class="sc-head">';
+    html += '<div class="sc-head-left">';
+    html += '<div class="sc-icon" style="background:' + catBg + ';color:' + s.iconColor + ';">' + s.icon + '</div>';
+    html += '<div><div class="sc-title">' + s.name + '</div><div class="sc-sub">' + s.nameEn + '</div></div>';
+    html += '</div>';
+    html += '<span class="sc-cat" style="background:' + catBg + ';color:' + catText + ';">' + s.catLabel + '</span>';
+    html += '</div>';
+
+    // Colors
+    html += '<div class="sc-preview">';
+    html += '<div class="sc-colors">';
+    s.colors.forEach(function(c) {
+      html += '<div class="sc-swatch" style="background:' + c.c + ';border:1px solid rgba(255,255,255,0.1);" data-color="' + c.n + ' ' + c.c + '"></div>';
+    });
+    html += '</div>';
+
+    // Mini preview
+    html += getPreviewHTML(s.preview);
+
+    html += '</div>';
+
+    // Meta tags
+    html += '<div class="sc-meta">';
+    s.tags.forEach(function(t) {
+      html += '<span class="sc-tag"><strong>' + t.k + '</strong> ' + t.v + '</span>';
+    });
+    html += '<span class="sc-tag" style="border-color:' + catText + '20;color:' + catText + ';"><strong>适用</strong> ' + s.useCase + '</span>';
+    html += '</div>';
+
+    html += '</div>';
+  });
+  document.getElementById('gallery').innerHTML = html;
+
+  // Observe fade-up
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(function(el) {
+    observer.observe(el);
+  });
+}
+
+renderGallery();
+</script>
+</body>
+</html>

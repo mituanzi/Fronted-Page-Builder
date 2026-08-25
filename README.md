@@ -1,4 +1,4 @@
-# Fronted-Page-Builder-Skill
+# Frontend Page Builder
 
 > 十种风格，一键构建前端页面。纯 HTML+CSS+JS 单文件，无需构建工具。
 > 从润滑材料AI预测引擎项目沉淀，扩展为覆盖全部场景的通用前端构建体系。
