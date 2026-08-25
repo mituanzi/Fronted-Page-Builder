@@ -158,3 +158,45 @@ body { background: var(--bg-0); color: var(--text-1); }
 
 - 适合：企业内部系统、项目管理、开发者工具、API 平台、文档站
 - 禁忌：不可使用渐变背景；不可使用大圆角（>16px）；不可使用过重阴影；不可使用 emoji
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  .content-wrapper { max-width: 800px; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 间距从 24px 降至 16px */
+  .section { padding: 32px 16px; }
+  .content-wrapper { padding: 0 16px; }
+
+  /* 网格单列 */
+  .feature-grid { grid-template-columns: 1fr; }
+
+  /* 表单元素纵向 */
+  .form-inline { flex-direction: column; gap: 12px; }
+
+  /* 表格水平滚动 */
+  .table-wrapper { overflow-x: auto; }
+  .data-table { min-width: 500px; }
+
+  /* Header 简化：仅保留 logo + 汉堡菜单 */
+  .header-right .header-secondary { display: none; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .section { padding: 24px 12px; }
+  .feature-grid { gap: 12px; }
+  .card { padding: 16px; }
+  .btn-primary, .btn-secondary { width: 100%; }
+}
+```
+
+**关键点**：商务简约风本身极简，移动端适配较为直接 — 主要是间距压缩和网格降列。此风格通常用于内部系统，表格水平滚动是主要的移动端交互方式。无需额外的视觉调整，保持克制即可。
