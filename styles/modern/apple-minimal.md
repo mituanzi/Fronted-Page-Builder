@@ -1,6 +1,7 @@
 # Apple 极简风（Apple Minimal）
 
 > 参考：Apple 官网、Apple 产品页、iOS 设置页、Mac App Store
+
 > 适用：产品官网、高端品牌展示、科技公司主页、简洁工具页
 
 ## 配色体系
