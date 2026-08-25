@@ -226,3 +226,46 @@ body { background: var(--bg-0); color: var(--text-1); }
 
 - 适合：创意品牌、独立产品官网、开发者工具、设计工作室、个人作品集、活动页、Z 世代产品
 - 禁忌：不可使用柔阴影（`box-shadow` 模糊半径必须为 0）；不可使用柔和缓动曲线（用 `steps()` 或线性）；不可使用大圆角（>12px）；不可使用低饱和度颜色（所有颜色必须高饱和）；不可使用浅灰色文字（用纯黑或深黑）；不可使用细边框（至少 2px，推荐 3px）
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  .brut-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 硬阴影从 4px 降至 3px（小屏减少视觉压迫） */
+  .brut-card { box-shadow: 3px 3px 0px #000; }
+  .brut-btn { box-shadow: 3px 3px 0px #000; }
+
+  /* 边框从 3px 降至 2px（小屏节省空间） */
+  .brut-card, .brut-btn { border-width: 2px; }
+
+  /* 保持 0 圆角（粗野主义核心特征不可妥协） */
+  /* 圆角不做任何调整，维持 0-4px */
+
+  /* 网格单列 */
+  .brut-grid { grid-template-columns: 1fr; }
+
+  /* 大标题保持冲击力但不溢出 */
+  .brut-title { font-size: 36px; word-break: break-word; }
+
+  /* 按钮全宽 */
+  .brut-btn { width: 100%; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .brut-title { font-size: 28px; }
+  .brut-card { padding: 16px; }
+  /* 阴影进一步缩小但保持可见 */
+  .brut-card { box-shadow: 2px 2px 0px #000; }
+}
+```
+
+**关键点**：新粗野主义在移动端的核心矛盾是"视觉冲击 vs 小屏空间"。解决方案：硬阴影从 4px 降至 3px（小屏仍可见但不压迫），边框从 3px 降至 2px（节省空间），但圆角保持 0px（核心特征不可妥协）。标题用 `word-break: break-word` 防止长标题溢出。
