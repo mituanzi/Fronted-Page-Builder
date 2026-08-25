@@ -181,3 +181,40 @@ body { background: var(--bg-0); color: var(--text-1); }
 
 - 适合：SaaS 产品界面、管理后台、文档站、数据看板
 - 禁忌：不要使用大面积纯白无层次；阴影不可过重；不可使用荧光色
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .feature-section { padding: 48px 24px; }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 卡片间距从 16px 降至 12px */
+  .card-grid { grid-template-columns: 1fr; gap: 12px; }
+
+  /* 阴影减轻（移动端浅色背景阴影更明显） */
+  .card { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+
+  /* 微渐变背景简化 */
+  .bg-gradient { background: var(--bg-1); }
+
+  /* 表单标签和输入框纵向排列 */
+  .form-row { flex-direction: column; align-items: stretch; }
+  .form-row label { margin-bottom: 6px; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .card { padding: 16px; }
+  .feature-section { padding: 32px 16px; }
+  .btn-primary { width: 100%; }
+}
+```
+
+**关键点**：明亮科技风本身布局简洁，移动端主要调整是网格降列和间距收紧。浅色背景在移动端阴影需要更轻（`0.06` 透明度），否则会显得脏。按钮在小屏全宽排列。
