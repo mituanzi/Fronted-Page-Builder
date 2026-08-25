@@ -1,6 +1,7 @@
 # 玻璃拟态风（Glassmorphism）
 
 > 参考：Apple macOS Big Sur、iOS 15 控制中心、Microsoft Fluent Design、Linear 部分 UI
+
 > 适用：AI 产品、智能助手、创意工具、设计平台、高端 SaaS 产品
 
 ## 配色体系
