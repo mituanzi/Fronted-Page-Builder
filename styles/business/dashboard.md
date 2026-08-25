@@ -1,6 +1,7 @@
 # 数据仪表盘风（Dashboard）
 
 > 参考：Vercel Dashboard、Stripe Dashboard、Linear、Notion Database、Grafana
+
 > 适用：管理后台、ERP/CRM 系统、数据看板、监控系统、运营管理平台
 
 ## 配色体系
