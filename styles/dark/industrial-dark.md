@@ -308,3 +308,43 @@ function animateCountTo(el, target, duration) {
 ## 参考实现
 
 完整参考：`/home/bml/xdg_root/workspace/ai4s-platform.html`（3,306 行）
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  .bg-grid { background-size: 64px 64px; }
+  .bg-glow-1, .bg-glow-2 { opacity: 0.6; }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 背景精简：仅保留 1 个光晕，网格隐藏 */
+  .bg-grid { display: none; }
+  .bg-glow-2 { display: none; }
+  .bg-glow-1 { width: 400px; height: 400px; }
+
+  /* backdrop-filter 降级 */
+  .glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .header { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+  /* 卡片间距收紧 */
+  .scenario-card, .bento-card { padding: 16px; }
+
+  /* 知识图谱高度缩小 */
+  .kg-container { height: 320px; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .hero-title { font-size: 22px; }
+  .section-title { font-size: 18px; }
+  .kg-container { height: 260px; }
+  .batch-stat .bs-val { font-size: 18px; }
+}
+```
+
+**关键点**：移动端隐藏网格背景（性能），减少光晕数量，backdrop-filter 从 12px 降至 8px（低端设备性能），知识图谱 Canvas 高度按比例缩小。
