@@ -1,7 +1,7 @@
 ---
 name: frontend-page-builder
 description: |
-  多风格前端页面构建 Skill。十种风格的通用前端构建经验。
+  多风格前端页面构建 Skill。从润滑材料AI预测引擎项目沉淀，并扩展为十种风格的通用前端构建经验。
   覆盖设计体系、组件模式、交互逻辑、验证流程、工程规范。
   十种风格：深色工业科技、未来赛博、明亮科技、玻璃拟态、Apple极简、明亮可爱、新粗野主义、商务简约、数据仪表盘、国风雅致。
   触发条件：用户说"做个页面"、"前端页面"、"构建页面"、"build a page"、"做个UI"，或指定风格如"深色科技风"、"玻璃拟态"、"赛博朋克"、"Apple风格"、"可爱风"、"商务风"、"国风"时触发。
@@ -11,7 +11,7 @@ description: |
 
 # Frontend Page Builder — 多风格前端页面构建 Skill
 
-> 十种风格的通用前端构建经验。
+> 从润滑材料AI预测引擎项目沉淀，并扩展为十种风格的通用前端构建经验。
 > 覆盖设计体系、组件模式、交互逻辑、验证流程、工程规范。
 > 适用于：需要快速搭建单页应用（SPA）的场景，纯 HTML+CSS+JS，无需构建工具。
 
@@ -62,13 +62,14 @@ HTML + CSS + JS 全部写在一个 `.html` 文件中，无需构建工具。
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>页面标题 | English Title</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* 1. CSS Variables (:root) */ /* 2. Reset & Base */ /* 3. Background */
-    /* 4. Header */ /* 5. Sections */ /* 6. Components */ /* 7. Forms */ /* 8. Responsive */
+    /* 4. Header */ /* 5. Sections */ /* 6. Components */ /* 7. Forms */
+    /* 8. Responsive (1024px + 768px + 480px 三档断点 + safe-area + 触摸优化) */
   </style>
 </head>
 <body>
@@ -387,6 +388,319 @@ Toast: 9999
 
 ---
 
+## 移动端自适应规范（所有风格必须实现）
+
+> 每个生成的页面必须在桌面端和移动端都完整可用。以下规范为**强制要求**，生成页面时必须包含。
+
+### 断点体系
+
+采用三档断点，覆盖从大屏到小手机的全部设备：
+
+| 断点 | 宽度范围 | 目标设备 | 核心变化 |
+|---|---|---|---|
+| 桌面 | > 1024px | PC / 大平板横屏 | 完整布局，多列网格 |
+| 平板 | 769px - 1024px | iPad / Android 平板 | 网格降列，侧边栏可折叠 |
+| 移动 | <= 768px | 手机竖屏 | 单列布局，汉堡菜单，底部导航 |
+| 小屏 | <= 480px | 小手机 | 紧凑间距，字号缩小，表头吸顶 |
+
+### CSS 自适应骨架（所有风格通用，生成时必须写入）
+
+```css
+/* ========== Responsive ========== */
+
+/* ---- 平板断点 ---- */
+@media (max-width: 1024px) {
+  /* 网格降列 */
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .bento-lg { grid-column: span 2; grid-row: span 1; }
+  /* 侧边栏折叠 */
+  .sidebar { width: 64px; }
+  .sidebar .sidebar-label { display: none; }
+  .sidebar.expanded { width: 240px; }
+  .sidebar.expanded .sidebar-label { display: block; }
+  /* 主内容区缩窄 */
+  .main-content { padding: 24px 24px; }
+  /* 下拉面板缩窄 */
+  .dropdown { width: min(340px, 90vw); }
+}
+
+/* ---- 移动端断点 ---- */
+@media (max-width: 768px) {
+  /* 基础间距 */
+  .section { padding: 32px 16px; }
+  .main-content { padding: 16px 16px; }
+
+  /* Header 转汉堡菜单 */
+  .header-nav { display: none; }
+  .header-nav.mobile-open { display: flex; position: fixed; top: var(--header-h); left: 0; right: 0; flex-direction: column; background: var(--bg-1); padding: 16px; z-index: 1001; box-shadow: var(--shadow-md); gap: 8px; }
+  .hamburger { display: flex; }
+
+  /* 标题缩小 */
+  .hero-title { font-size: 28px !important; }
+  .section-title { font-size: 22px !important; }
+  .hero-subtitle { font-size: 14px !important; }
+
+  /* 网格全部单列 */
+  .grid-2, .grid-3, .grid-4, .bento-grid, .scenario-grid, .mode-grid { grid-template-columns: 1fr; }
+  .bento-lg, .bento-wide, .bento-tall { grid-column: span 1; grid-row: span 1; }
+
+  /* Flex 纵向排列 */
+  .stats-row, .agent-flow, .form-row, .batch-summary { flex-direction: column; gap: 12px; }
+  .stat-card, .batch-stat { min-width: auto; width: 100%; }
+
+  /* 侧边栏转底部导航 */
+  .app-layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: fixed; bottom: 0; top: auto; flex-direction: row; overflow-x: auto; z-index: 1000; padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+  .sidebar .sidebar-item { flex-shrink: 0; }
+  .main-content { padding-bottom: 80px; }
+
+  /* Modal 全屏化 */
+  .modal-box { width: 96vw; max-height: 92vh; border-radius: var(--radius-md); }
+  .modal-body { padding: 16px; }
+
+  /* 侧滑面板全屏 */
+  .slide-panel { width: 100vw; right: -100vw; }
+  .slide-panel.show { right: 0; }
+
+  /* 下拉面板全宽 */
+  .dropdown { width: calc(100vw - 32px); right: 16px; left: 16px; }
+
+  /* 表格水平滚动 */
+  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .data-table { min-width: 600px; }
+
+  /* 隐藏次要信息 */
+  .hide-mobile { display: none !important; }
+
+  /* Toast 位置调整 */
+  .toast { top: 72px; right: 16px; left: 16px; max-width: none; }
+}
+
+/* ---- 小屏断点 ---- */
+@media (max-width: 480px) {
+  .section { padding: 24px 12px; }
+  .hero-title { font-size: 24px !important; }
+  .hero-content { padding: 0; }
+  .modal-box { width: 100vw; border-radius: 0; max-height: 100vh; }
+  .modal-head { padding: 12px 16px; }
+  .modal-body { padding: 12px; }
+  .modal-foot { padding: 12px 16px; }
+  .btn-primary, .btn-ghost { padding: 10px 20px; font-size: 14px; width: 100%; }
+  .modal-foot { flex-direction: column; gap: 8px; }
+  .modal-foot .btn-primary, .modal-foot .btn-ghost { width: 100%; }
+}
+```
+
+### 汉堡菜单组件（移动端 Header 必备）
+
+桌面端隐藏，移动端显示。点击展开/收起导航菜单。
+
+```css
+/* 汉堡按钮 — 桌面端隐藏 */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.hamburger span {
+  display: block;
+  width: 20px; height: 2px;
+  background: var(--text-1);
+  border-radius: 1px;
+  transition: all 0.3s var(--ease);
+}
+.hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+```
+
+```html
+<!-- 在 Header 中添加 -->
+<div class="hamburger" onclick="toggleMobileNav()">
+  <span></span><span></span><span></span>
+</div>
+```
+
+```javascript
+function toggleMobileNav() {
+  var nav = document.querySelector('.header-nav');
+  var btn = document.querySelector('.hamburger');
+  nav.classList.toggle('mobile-open');
+  btn.classList.toggle('active');
+}
+// 点击导航项后自动收起
+document.querySelectorAll('.header-nav .nav-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    document.querySelector('.header-nav').classList.remove('mobile-open');
+    document.querySelector('.hamburger').classList.remove('active');
+  });
+});
+```
+
+### 触摸优化规则
+
+1. **最小点击区域 44x44px** — 所有可点击元素（按钮、链接、标签芯片）在移动端的最小尺寸为 44x44px（Apple HIG 标准）
+```css
+@media (max-width: 768px) {
+  .btn-primary, .btn-ghost, .nav-item, .ind-chip, .tab {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
+}
+```
+
+2. **禁用 hover 依赖** — 移动端没有 hover，关键操作不能只在 hover 中暴露
+```css
+@media (hover: none) {
+  .hover-only { display: block; }  /* hover 才显示的元素改为常驻 */
+  .desktop-tooltip { display: none; }  /* 桌面端 tooltip 在移动端隐藏 */
+}
+```
+
+3. **禁用文本选择** — 按钮和导航项在移动端禁止长按选中
+```css
+@media (max-width: 768px) {
+  .btn-primary, .btn-ghost, .nav-item, .hamburger, .tab {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+```
+
+### Safe Area 适配（刘海屏 / 底部安全区）
+
+```css
+/* Header 避让刘海 */
+.header { padding-top: env(safe-area-inset-top); height: calc(var(--header-h) + env(safe-area-inset-top)); }
+
+/* 底部导航避让 Home Indicator */
+.bottom-nav, .sidebar { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Modal 全屏时避让 */
+@media (max-width: 480px) {
+  .modal-box { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+}
+```
+
+### viewport meta（必须包含）
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+```
+
+> `viewport-fit=cover` 是 safe-area 适配的前提，不加这个 meta，`env(safe-area-inset-*)` 不生效。
+
+### 表格移动端策略
+
+桌面表格在移动端有三种处理方式，根据数据量选择：
+
+1. **水平滚动**（列数少，数据重要）
+```css
+@media (max-width: 768px) {
+  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .data-table { min-width: 600px; }
+}
+```
+
+2. **卡片化**（列数多，每行可独立展示）
+```css
+@media (max-width: 768px) {
+  .data-table thead { display: none; }
+  .data-table, .data-table tbody, .data-table tr, .data-table td { display: block; width: 100%; }
+  .data-table tr { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px; }
+  .data-table td { display: flex; justify-content: space-between; padding: 8px 12px; border: none; }
+  .data-table td::before { content: attr(data-label); color: var(--text-2); font-size: 12px; flex-shrink: 0; margin-right: 16px; }
+}
+```
+```html
+<!-- HTML 中 td 需要 data-label 属性 -->
+<td data-label="名称">xxx</td>
+<td data-label="状态">xxx</td>
+```
+
+3. **隐藏次要列**（列数多，部分列非关键）
+```css
+@media (max-width: 768px) {
+  .data-table th.col-optional, .data-table td.col-optional { display: none; }
+}
+```
+
+### 移动端验证清单
+
+生成页面后，除了标准验证流程，额外检查以下移动端专项：
+
+1. **viewport meta** — `viewport-fit=cover` 是否存在
+2. **汉堡菜单** — Header 中是否有 `.hamburger` 元素和 `toggleMobileNav()` 函数
+3. **断点完整性** — 是否同时包含 1024px、768px、480px 三个断点的 `@media` 规则
+4. **单列回退** — 所有 `grid-template-columns: repeat(N, 1fr)` 是否都有对应的移动端单列回退
+5. **Modal 全屏** — `.modal-box` 在 480px 断点下是否 `width: 100vw`
+6. **Safe Area** — `.header` 和底部导航是否使用 `env(safe-area-inset-*)`
+7. **触摸目标** — 可点击元素在移动端是否 >= 44px 高度
+8. **无水平溢出** — `body { overflow-x: hidden }` 防止移动端水平滚动条
+
+```bash
+# 移动端专项验证脚本
+python3 -c "
+import re
+with open('page.html','r') as f: html = f.read()
+
+checks = []
+
+# 1. viewport-fit=cover
+checks.append(('viewport-fit=cover', 'viewport-fit=cover' in html))
+
+# 2. 汉堡菜单
+checks.append(('hamburger element', 'hamburger' in html and 'toggleMobileNav' in html))
+
+# 3. 三档断点
+for bp in ['1024', '768', '480']:
+    checks.append((f'@media {bp}px', f'max-width:{bp}' in html or f'max-width: {bp}' in html))
+
+# 4. grid 单列回退
+checks.append(('grid 1fr mobile', 'grid-template-columns: 1fr' in html or 'grid-template-columns:1fr' in html))
+
+# 5. Modal 全屏
+checks.append(('modal 100vw', '100vw' in html))
+
+# 6. safe-area
+checks.append(('safe-area-inset', 'safe-area-inset' in html))
+
+# 7. overflow-x hidden
+checks.append(('overflow-x hidden', 'overflow-x' in html and 'hidden' in html))
+
+for name, passed in checks:
+    print(f'  {\"PASS\" if passed else \"FAIL\"} — {name}')
+"
+```
+
+### 各风格的移动端差异
+
+虽然上述骨架通用，但各风格在移动端有独特处理：
+
+| 风格 | 移动端特殊处理 |
+|---|---|
+| 深色工业科技 | 背景光晕减少为 1 个，网格背景隐藏，backdrop-filter 降为 8px |
+| 未来赛博 | 扫描线动画暂停，粒子数量减半，霓虹辉光阴影缩小 |
+| 明亮科技 | 卡片间距从 16px 降至 12px，Bento Grid 直接单列 |
+| 玻璃拟态 | backdrop-filter 降为 12px（性能），渐变光晕数量减为 1-2 个 |
+| Apple 极简 | 留白保持，标题 28px，胶囊按钮全宽，滚动动画保留但缩短 |
+| 明亮可爱 | 圆角从 32px 降至 20px，弹跳动画保留但更快（0.3s），Emoji 字号 36px |
+| 新粗野主义 | 硬阴影从 4px 降至 3px，边框从 3px 降至 2px，保持视觉冲击 |
+| 商务简约 | 间距压缩，无额外装饰变化，保持极简 |
+| 数据仪表盘 | 侧边栏转底部 Tab 栏，图表高度降至 200px，表格水平滚动 |
+| 国风雅致 | 水墨装饰隐藏（性能），留白保持，衬线字号 16px 最小 |
+
+详细规则见各风格文件中的「移动端适配」章节。
+
+---
+
 ## 组合配方：AI 产品风格
 
 > 2025-2026 年 AI 产品最流行的组合：**玻璃拟态 + Bento Grid + 动效**
@@ -454,15 +768,16 @@ body { background: linear-gradient(135deg, #0F0C29, #302B63, #24243E); }
 
 1. **确定风格**：根据用途和用户偏好，用风格路由器选择风格
 2. **读取风格文件**：加载对应 `styles/<category>/<style>.md` 获取完整设计体系
-3. **初始化**：创建 `.html` 文件，写入 DOCTYPE、head、字体引用
+3. **初始化**：创建 `.html` 文件，写入 DOCTYPE、head、字体引用，viewport 必须包含 `viewport-fit=cover`
 4. **CSS Variables**：复制对应风格的 `:root` 变量
 5. **背景层**：按风格添加背景处理（网格/渐变/光斑/纸纹/无）
-6. **Header**：按风格添加 Header 样式
+6. **Header**：按风格添加 Header 样式，**必须包含汉堡菜单组件**
 7. **布局**：选择布局模式（标准 section / Bento Grid / Sidebar）
 8. **组件**：复制共享组件 HTML 结构，按风格应用 CSS 变量
 9. **JavaScript**：按模块顺序编写（Config → Utils → Data → Modal → History → Export → Init）
-10. **验证**：执行完整验证流程（语法 + 括号 + 函数 + ID + onclick）
-11. **记录**：记录文件行数和字节数
+10. **响应式**：写入三档断点 @media 规则（1024px + 768px + 480px），实现网格降列、Header 汉堡菜单、Modal 全屏、Safe Area 适配、触摸目标 >= 44px
+11. **验证**：执行完整验证流程（语法 + 括号 + 函数 + ID + onclick）+ 移动端专项验证（viewport-fit + 汉堡菜单 + 三档断点 + 单列回退 + Modal 全屏 + safe-area + overflow-x hidden）
+12. **记录**：记录文件行数和字节数
 
 ---
 
