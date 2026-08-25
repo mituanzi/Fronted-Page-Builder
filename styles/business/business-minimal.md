@@ -1,6 +1,7 @@
 # 商务简约风（Business Minimal）
 
 > 参考：Linear、Vercel、GitHub、Arco Design Pro
+
 > 适用：企业内部系统、项目管理工具、开发者工具、数据 API 平台
 
 ## 配色体系
