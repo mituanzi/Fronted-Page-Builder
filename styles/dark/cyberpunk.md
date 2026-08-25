@@ -345,3 +345,42 @@ initParticles();
 ## 参考实现
 
 纯CSS+JS实现，无需外部框架。粒子系统使用原生 Canvas API，60粒子固定上限保证性能。
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  /* 粒子数量减半 */
+  /* 在 JS 中检测：if (window.innerWidth <= 1024) maxParticles = 30; */
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 扫描线动画暂停（性能 + 视觉干扰） */
+  .scan-line { animation: none; display: none; }
+
+  /* 粒子进一步减少 */
+  /* JS 中：if (window.innerWidth <= 768) maxParticles = 15; */
+
+  /* 霓虹辉光阴影缩小 */
+  .neon-text { text-shadow: 0 0 6px currentColor, 0 0 12px currentColor; }
+  .neon-border { box-shadow: 0 0 6px currentColor; }
+
+  /* HUD 元素隐藏次要信息 */
+  .hud-secondary { display: none; }
+
+  /* 故障文字效果关闭（GPU 压力） */
+  .glitch { animation: none; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .neon-text { text-shadow: 0 0 4px currentColor; }
+  .hud-corner { display: none; }
+}
+```
+
+**关键点**：移动端必须大幅降低 GPU 负担 — 暂停扫描线和故障文字动画，粒子数量从 60 降至 15，霓虹辉光阴影半径缩小。HUD 角标和次要信息在小屏隐藏。JS 中需根据 `window.innerWidth` 动态调整粒子数量。
