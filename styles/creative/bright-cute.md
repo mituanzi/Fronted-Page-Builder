@@ -204,3 +204,50 @@ body { background: var(--bg-0); color: var(--text-1); }
 
 - 适合：教育产品、C 端消费应用、引导页、活动页、轻松向工具
 - 禁忌：不可使用尖锐直角；阴影不可过重变成"压迫感"；不可使用深黑色文字（用 `#2D2D2D` 代替 `#000`）
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  .habit-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-row { gap: 12px; }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 大圆角从 32px 降至 20px（小屏过圆显得拥挤） */
+  .card-cute, .modal-box { border-radius: 20px; }
+  .btn-cute { border-radius: 16px; }
+
+  /* 弹跳动画保留但更快（移动端注意力短） */
+  .bounce-in { animation-duration: 0.3s; }
+  .fade-up { transition: all 0.3s var(--ease-bounce); }
+
+  /* Emoji 字号缩小 */
+  .hero-emoji { font-size: 36px; }
+  .icon-cute { font-size: 28px; }
+
+  /* 习惯卡片单列 */
+  .habit-grid { grid-template-columns: 1fr; }
+
+  /* 统计卡片纵向 */
+  .stats-row { flex-direction: column; }
+  .stat-card { min-width: auto; width: 100%; }
+
+  /* 渐变光斑缩小 */
+  .bg-blob-1, .bg-blob-2 { width: 200px; height: 200px; opacity: 0.4; }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .hero-title { font-size: 22px; }
+  .card-cute { padding: 16px; border-radius: 16px; }
+  .btn-cute { width: 100%; }
+  .emoji-celebrate { font-size: 48px; }
+}
+```
+
+**关键点**：可爱风在移动端保持圆润和弹跳感，但大圆角需从 32px 降至 20px（小屏过大圆角会压缩内容空间）。弹跳动画保留但缩短至 0.3s（移动端用户注意力更短）。Emoji 字号适当缩小。渐变光斑减小并降低透明度。
