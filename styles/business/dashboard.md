@@ -360,3 +360,72 @@
 
 - 适合：管理后台、ERP/CRM 系统、数据看板、监控系统、运营管理平台、内容管理系统
 - 禁忌：不可使用大圆角（>12px，数据界面需要精确感）；不可使用鲜艳的装饰色（保持专业克制）；不可使用过重的阴影（阴影模糊不超过 12px）；不可使用装饰性动画（所有动画必须功能性，如数据更新反馈）；不可省略侧边栏（侧边栏是仪表盘的核心导航模式）；信息密度不可过低（每屏应展示足够数据，留白不是此风格的目标）
+
+## 移动端适配
+
+**断点规则**（在 SKILL.md 通用骨架基础上追加本风格专属规则）：
+
+```css
+/* ---- 平板 ---- */
+@media (max-width: 1024px) {
+  /* 侧边栏折叠为图标条 */
+  .sidebar { width: 56px; }
+  .sidebar .sidebar-label { display: none; }
+  .sidebar .sidebar-item { justify-content: center; padding: 12px 0; }
+  /* 展开时恢复 */
+  .sidebar.expanded { width: 220px; position: fixed; z-index: 1002; height: 100vh; }
+  .sidebar.expanded .sidebar-label { display: block; }
+  .sidebar.expanded .sidebar-item { justify-content: flex-start; padding: 12px 16px; }
+
+  /* 内容区填满 */
+  .main-content { margin-left: 56px; }
+
+  /* 卡片网格 2 列 */
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- 移动端 ---- */
+@media (max-width: 768px) {
+  /* 侧边栏转底部 Tab 栏 */
+  .sidebar {
+    width: 100%; height: auto;
+    position: fixed; bottom: 0; top: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    z-index: 1000;
+    padding: 8px 0;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+  }
+  .sidebar .sidebar-item { flex-shrink: 0; padding: 8px 16px; }
+  .sidebar .sidebar-label { font-size: 10px; display: block; }
+  .sidebar .sidebar-icon { margin: 0 auto 2px; }
+
+  /* 内容区底部留出 Tab 栏空间 */
+  .main-content { margin-left: 0; padding: 16px; padding-bottom: 80px; }
+
+  /* 图表高度缩小 */
+  .chart-container { height: 200px; }
+  .chart-container canvas { height: 200px !important; }
+
+  /* 统计卡片单列 */
+  .stat-grid { grid-template-columns: 1fr; }
+
+  /* 表格水平滚动 + 吸顶表头 */
+  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .data-table { min-width: 600px; }
+  .data-table thead { position: sticky; top: 0; z-index: 1; background: var(--bg-2); }
+}
+
+/* ---- 小屏 ---- */
+@media (max-width: 480px) {
+  .stat-card { padding: 12px; }
+  .stat-value { font-size: 20px; }
+  .chart-container { height: 160px; }
+  .chart-container canvas { height: 160px !important; }
+  /* 侧边栏最多显示 5 个 Tab */
+  .sidebar .sidebar-item:nth-child(n+6) { display: none; }
+}
+```
+
+**关键点**：数据仪表盘是移动端适配最复杂的风格 — 侧边栏从左侧导航转为底部 Tab 栏（参考 iOS Tab Bar 模式），图表高度从 300px 降至 200px，表格表头吸顶方便水平滚动时查看列名。小屏下侧边栏最多显示 5 个 Tab 项，超出隐藏。内容区底部必须留出 80px 给 Tab 栏 + safe-area。
